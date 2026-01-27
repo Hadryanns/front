@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import api from "../services/api"
 
-function PeopleForm(){
+function LoanForm(){
 
     //Hook para navegação via código ( não sei o que faz isso )
     const navigate = useNavigate()
@@ -11,21 +11,20 @@ function PeopleForm(){
     const { id } = useParams()
 
     //Criamos o objeto para quardar os dados do usuário
-    const [people, setPeople] = useState({
-        name : "",
-        birthdate : "",
+    const [loan, setLoan] = useState({
         cpf : "",
-        phone : "",
-        email : ""
+        isbn : "",
+        returnDate : ""
     })
 
     //Verifica se esse fórmulario é de editar ou criar pessoa
     useEffect(() => {
         if (id) {
-            api.get(`api/people/${id}`).then(response => {
-                setPeople(response.data).catch(error => {
+            api.get(`api/loan/${id}`).then(response => {
+                console.log(response.data)
+                setLoan(response.data).catch(error => {
                     alert("Erro ao buscar dados para edição. Verifique o console.")
-                    navigate("/read/people");
+                    navigate("/read/loan");
                     console.error(error)
                 })
             })
@@ -35,7 +34,7 @@ function PeopleForm(){
     //Pega o valor do imput e  insere no objeto, esse "name" do set people não é o msm do objeto, é tipo um ID do input
     const handleChange = (event) => {
         const {name , value} = event.target
-        setPeople({ ...people, [name] : value})
+        setLoan({ ...loan, [name] : value})
     }
 
     //Salva os dados na api
@@ -47,24 +46,22 @@ function PeopleForm(){
 
             if (id) {
                 //Se tem ID é UPDATE
-                await api.put(`/api/people/${id}`, people)
-                navigate("/read/people")
-                alert("Pessoa atualizada com sucesso")
+                await api.put(`/api/loan/${id}`, loan)
+                navigate("/read/loan")
+                alert("Empréstimo atualizado com sucesso")
             }
             else{
                 //Se não tem ID é CREATE
-                await api.post('/api/people', people);
-                navigate("/read/people")
-                alert("Pessoa criada com sucesso")
+                await api.post('/api/loan', loan);
+                navigate("/read/loan")
+                alert("Empréstimo criado com sucesso")
             }
 
             //Importante para limpar o formulário
-            setPeople({
-                name : "",
-                birthdate : "",
+            setLoan({
                 cpf : "",
-                phone : "",
-                email : ""
+                isbn : "",
+                returnDate : ""
             })
         } catch (error) {
 
@@ -82,28 +79,16 @@ function PeopleForm(){
 
     return (
         <div style={{ maxWidth: '500px', margin: '0 auto', padding: "20px" }}>
-            <h2>{id ? "Editar Pessoa" : "Novo Cadastro"}</h2>
+            <h2>{id ? "Editar Empréstimo" : "Novo Empréstimo"}</h2>
             <form onSubmit={handleSubmit}>
                 
                 {/* Campo Nome */}
                 <div style={{ marginBottom: '10px' }}>
-                    <label>Nome:</label><br/>
+                    <label>CPF:</label><br/>
                     <input 
                         type="text" 
-                        name="name" 
-                        value={people.name} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
-
-                {/* Campo Email */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Email:</label><br/>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        value={people.email} 
+                        name="cpf" 
+                        value={loan.people.cpf} 
                         onChange={handleChange} 
                         required 
                     />
@@ -111,34 +96,24 @@ function PeopleForm(){
 
                 {/* Campo CPF */}
                 <div style={{ marginBottom: '10px' }}>
-                    <label>CPF:</label><br/>
+                    <label>ISBN:</label><br/>
                     <input 
                         type="text" 
-                        name="cpf" 
-                        value={people.cpf} 
+                        name="isbn" 
+                        value={loan.book.isbn} 
                         onChange={handleChange} 
                         required 
                     />
                 </div>
 
-                {/* Campo Telefone */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Telefone:</label><br/>
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        value={people.phone} 
-                        onChange={handleChange} 
-                    />
-                </div>
 
                 {/* Campo Data de Nascimento */}
                 <div style={{ marginBottom: '10px' }}>
-                    <label>Data de Nascimento:</label><br/>
+                    <label>Data de retorno:</label><br/>
                     <input 
                         type="date" 
-                        name="birthdate" 
-                        value={people.birthdate} 
+                        name="returnDate" 
+                        value={loan.returnDate} 
                         onChange={handleChange} 
                         required 
                     />
@@ -146,7 +121,7 @@ function PeopleForm(){
 
                 <div style={{ marginTop: '20px' }}>
                     {/* Botão Cancelar: Volta para a Home */}
-                    <button type="button" onClick={() => navigate('/read/people')} style={{ marginRight: '10px' }}>
+                    <button type="button" onClick={() => navigate('/read/loan')} style={{ marginRight: '10px' }}>
                         Cancelar
                     </button>
                     <button type="submit">{id ? "Salvar alterações" : "Cadastrar"}</button>
@@ -157,4 +132,4 @@ function PeopleForm(){
     )
 }
 
-export default PeopleForm
+export default LoanForm

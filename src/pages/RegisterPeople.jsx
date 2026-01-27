@@ -1,6 +1,6 @@
 import PeopleForm from "../components/PeopleForm";
 
-function Cadastro() {
+function RegisterPeople() {
     return (
         <div>
             <h1>Teste 1234</h1>
@@ -10,4 +10,4 @@ function Cadastro() {
     );
 }
 
-export default Cadastro;
+export default RegisterPeople;

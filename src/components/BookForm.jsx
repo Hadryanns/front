@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import api from "../services/api"
 
-function PeopleForm(){
+function BookForm(){
 
     //Hook para navegação via código ( não sei o que faz isso )
     const navigate = useNavigate()
@@ -11,21 +11,21 @@ function PeopleForm(){
     const { id } = useParams()
 
     //Criamos o objeto para quardar os dados do usuário
-    const [people, setPeople] = useState({
+    const [book, setBook] = useState({
         name : "",
-        birthdate : "",
-        cpf : "",
-        phone : "",
-        email : ""
+        author : "",
+        isbn : "",
+        launchDate : ""
     })
 
     //Verifica se esse fórmulario é de editar ou criar pessoa
     useEffect(() => {
         if (id) {
-            api.get(`api/people/${id}`).then(response => {
-                setPeople(response.data).catch(error => {
+            api.get(`api/book/${id}`).then(response => {
+                console.log(response.data)
+                setBook(response.data).catch(error => {
                     alert("Erro ao buscar dados para edição. Verifique o console.")
-                    navigate("/read/people");
+                    navigate("/read/book");
                     console.error(error)
                 })
             })
@@ -35,7 +35,7 @@ function PeopleForm(){
     //Pega o valor do imput e  insere no objeto, esse "name" do set people não é o msm do objeto, é tipo um ID do input
     const handleChange = (event) => {
         const {name , value} = event.target
-        setPeople({ ...people, [name] : value})
+        setBook({ ...book, [name] : value})
     }
 
     //Salva os dados na api
@@ -47,24 +47,23 @@ function PeopleForm(){
 
             if (id) {
                 //Se tem ID é UPDATE
-                await api.put(`/api/people/${id}`, people)
-                navigate("/read/people")
-                alert("Pessoa atualizada com sucesso")
+                await api.put(`/api/book/${id}`, book)
+                navigate("/read/book")
+                alert("Livro atualizado com sucesso")
             }
             else{
                 //Se não tem ID é CREATE
-                await api.post('/api/people', people);
-                navigate("/read/people")
-                alert("Pessoa criada com sucesso")
+                await api.post('/api/book', book);
+                navigate("/read/book")
+                alert("Livro criado com sucesso")
             }
 
             //Importante para limpar o formulário
-            setPeople({
+            setBook({
                 name : "",
-                birthdate : "",
-                cpf : "",
-                phone : "",
-                email : ""
+                author : "",
+                isbn : "",
+                launchDate : ""
             })
         } catch (error) {
 
@@ -82,7 +81,7 @@ function PeopleForm(){
 
     return (
         <div style={{ maxWidth: '500px', margin: '0 auto', padding: "20px" }}>
-            <h2>{id ? "Editar Pessoa" : "Novo Cadastro"}</h2>
+            <h2>{id ? "Editar Livro" : "Novo Livro"}</h2>
             <form onSubmit={handleSubmit}>
                 
                 {/* Campo Nome */}
@@ -91,7 +90,7 @@ function PeopleForm(){
                     <input 
                         type="text" 
                         name="name" 
-                        value={people.name} 
+                        value={book.name} 
                         onChange={handleChange} 
                         required 
                     />
@@ -99,11 +98,11 @@ function PeopleForm(){
 
                 {/* Campo Email */}
                 <div style={{ marginBottom: '10px' }}>
-                    <label>Email:</label><br/>
+                    <label>Autor:</label><br/>
                     <input 
-                        type="email" 
-                        name="email" 
-                        value={people.email} 
+                        type="text" 
+                        name="author" 
+                        value={book.author} 
                         onChange={handleChange} 
                         required 
                     />
@@ -111,34 +110,24 @@ function PeopleForm(){
 
                 {/* Campo CPF */}
                 <div style={{ marginBottom: '10px' }}>
-                    <label>CPF:</label><br/>
+                    <label>ISBN:</label><br/>
                     <input 
                         type="text" 
-                        name="cpf" 
-                        value={people.cpf} 
+                        name="isbn" 
+                        value={book.isbn} 
                         onChange={handleChange} 
                         required 
                     />
                 </div>
 
-                {/* Campo Telefone */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Telefone:</label><br/>
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        value={people.phone} 
-                        onChange={handleChange} 
-                    />
-                </div>
 
                 {/* Campo Data de Nascimento */}
                 <div style={{ marginBottom: '10px' }}>
-                    <label>Data de Nascimento:</label><br/>
+                    <label>Data de lançamento:</label><br/>
                     <input 
                         type="date" 
-                        name="birthdate" 
-                        value={people.birthdate} 
+                        name="launchDate" 
+                        value={book.launchDate} 
                         onChange={handleChange} 
                         required 
                     />
@@ -146,7 +135,7 @@ function PeopleForm(){
 
                 <div style={{ marginTop: '20px' }}>
                     {/* Botão Cancelar: Volta para a Home */}
-                    <button type="button" onClick={() => navigate('/read/people')} style={{ marginRight: '10px' }}>
+                    <button type="button" onClick={() => navigate('/read/book')} style={{ marginRight: '10px' }}>
                         Cancelar
                     </button>
                     <button type="submit">{id ? "Salvar alterações" : "Cadastrar"}</button>
@@ -157,4 +146,4 @@ function PeopleForm(){
     )
 }
 
-export default PeopleForm
+export default BookForm
