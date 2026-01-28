@@ -42,80 +42,89 @@ function LoanList() {
        }
    };
 
+   //Função de Update
+   const updateLoan = async (id) => {
+    if (confirm("Devolver livro ao acervo?")){
+        try {
+            await api.put(`/api/loan/${id}`, {});
+            window.location.reload()
+        } catch (error) {
+            console.error("Erro:", error);
+               alert("Erro ao editar.");
+        }
+        
+    }
+   }
+
    return (
-       <div style={{ padding: '10px'}}>
+       <div className="container mt-3">
 
-           
-           <div style={{ display: 'flex', marginBottom: '20px', alignItems : "center" , width : "100%"}}>
-            
-            <div style={{display : "flex", gap : "10px", alignItems : "center"  }}>
-               <h2>Histórico de empréstimo</h2>
+  {/* Topo */}
+  <div className="d-flex justify-content-between align-items-center mb-3">
 
-               <Link to="/read/book">
-                   <button>Lista de livros</button>
-               </Link>
+    {/* Esquerda */}
+    <div className="d-flex align-items-center gap-2">
+      <h4 className="mb-0">Histórico de empréstimo</h4>
 
-               <Link to="/read/people">
-                   <button>Lista de pessoas</button>
-               </Link>
-            </div>
+      <Link to="/read/book" className="btn btn-outline-primary btn-sm">
+        Lista de livros
+      </Link>
 
+      <Link to="/read/people" className="btn btn-outline-primary btn-sm">
+        Lista de pessoas
+      </Link>
+    </div>
 
+    {/* Direita */}
+    <Link to="/register/loan" className="btn btn-success">
+      + Novo Empréstimo
+    </Link>
+  </div>
 
+  {/* Tabela */}
+  <table className="table table-bordered table-hover text-center align-middle">
+    <thead className="table-dark">
+      <tr>
+        <th>Nome do Livro</th>
+        <th>Nome da Pessoa</th>
+        <th>Data de Empréstimo</th>
+        <th>Data de Retorno</th>
+        <th>Retornou?</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
 
-            <div style={{ display: 'flex', minWidth : "70%", flexDirection : "row-reverse"
-            , columnGap : "15px"}}>
-               <Link to="/register/loan">
-                   <button>Novo Empréstimo</button>
-               </Link>
+    <tbody>
+      {loan.map((emprestimo) => (
+        <tr key={emprestimo.id}>
+          <td>{emprestimo.book.name}</td>
+          <td>{emprestimo.people.name}</td>
+          <td>{emprestimo.loanDate}</td>
+          <td>{emprestimo.returnDate}</td>
+          <td>
+            {emprestimo.returned 
+              ? <span className="badge bg-success">Sim</span>
+              : <span className="badge bg-danger">Não</span>
+            }
+          </td>
+          <td className="d-flex justify-content-center gap-2">
+            <button 
+              onClick={() => updateLoan(emprestimo.id)} 
+              className="btn btn-warning btn-sm">
+              Retornou
+            </button>
 
-               <Link to="/register/book">
-                   <button>Novo Livro</button>
-               </Link>
-
-               <Link to="/register/people">
-                   <button>Nova Pessoa</button>
-               </Link>
-            </div>
-              
-           </div>
-          
-           <table border="1" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
-               <thead>
-                   <tr>
-                       <th>Nome do Livro</th>
-                       <th>Nome da Pessoa</th>
-                       <th>Data de Empréstimo</th>
-                       <th>Data de Retorno</th>
-                       <th>Retornou?</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   {loan.map((emprestimo) => (
-                       <tr key={emprestimo.id}>
-                           <td>{emprestimo.book.name}</td>
-                           <td>{emprestimo.people.name}</td>
-                           <td>{emprestimo.loanDate}</td>
-                           <td>{emprestimo.returnDate}</td>
-                           <td>{emprestimo.returned}</td>
-                           <td>
-
-                                <Link to={`/update/loan/${emprestimo.id}`}>
-                                    <button style={{ marginRight: '5px' }}>Editar</button>
-                                </Link>
-                               
-                               <button
-                                   onClick={() => deleteLoan(loan.id)}
-                                   style={{ backgroundColor: '#ffcccc', cursor: 'pointer' }}>
-                                   Excluir
-                               </button>
-
-                           </td>
-                       </tr>
-                   ))}
-               </tbody>
-           </table>
-       </div>
+            <button 
+              onClick={() => deleteLoan(emprestimo.id)} 
+              className="btn btn-danger btn-sm">
+              Excluir
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
    );
 }
 

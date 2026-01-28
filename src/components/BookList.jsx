@@ -9,7 +9,12 @@ function BookList() {
        const loadBook = async () => {
            try {
                const response = await api.get('/api/book');
-               setBook(response.data);
+               if (Array.isArray(response.data)){
+                   setBook(response.data);
+               }
+               else{
+                setBook([])
+               }
            } catch (error) {
                console.error("Erro:", error);
                alert("Erro ao carregar a lista de livros. Verifique o console.");
@@ -37,62 +42,65 @@ function BookList() {
    };
 
    return (
-       <div style={{ padding: '10px'}}>
+       <div className="container mt-3">
 
-           
-           <div style={{ display: 'flex', marginBottom: '20px', alignItems : "center" , width : "100%"}}>
-            
-            <div style={{display : "flex", gap : "10px", alignItems : "center"  }}>
-               <h2>Lista de Livros</h2>
-            </div>
+  {/* Cabeçalho */}
+  <div className="d-flex justify-content-between align-items-center mb-3">
 
+    {/* Esquerda */}
+    <div className="d-flex align-items-center gap-2">
+      <h4 className="mb-0">Livros</h4>
 
-            <div style={{ display: 'flex', minWidth : "70%", flexDirection : "row-reverse"
-            , columnGap : "15px"}}>
-               <Link to="/register/book">
-                   <button>Novo Livro</button>
-               </Link>
+      <Link to="/read/loan" className="btn btn-outline-primary btn-sm">
+        Histórico de Empréstimos
+      </Link>
 
-               <Link to="/read/loan">
-                   <button>Página inicial</button>
-               </Link>
-            </div>
-              
-           </div>
-          
-           <table border="1" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'center' }}>
-               <thead>
-                   <tr>
-                       <th>Nome</th>
-                       <th>Autor</th>
-                       <th>ISBN</th>
-                       <th>Ações</th>
-                   </tr>
-               </thead>
-               <tbody>
-                   {book.map((livro) => (
-                       <tr key={livro.id}>
-                           <td>{livro.name}</td>
-                           <td>{livro.author}</td>
-                           <td>{livro.isbn}</td>
-                           <td>
+      <Link to="/read/people" className="btn btn-outline-primary btn-sm">
+        Lista de Pessoas
+      </Link>
+    </div>
 
-                                <Link to={`/update/book/${livro.id}`}>
-                                    <button style={{ marginRight: '5px' }}>Editar</button>
-                                </Link>
-                               
-                               <button
-                                   onClick={() => deleteBook(livro.id)}
-                                   style={{ backgroundColor: '#ffcccc', cursor: 'pointer' }}>
-                                   Excluir
-                               </button>
+    {/* Direita */}
+    <Link to="/register/book" className="btn btn-success">
+      + Novo Livro
+    </Link>
+  </div>
 
-                           </td>
-                       </tr>
-                   ))}
-               </tbody>
-           </table>
-       </div>
+  {/* Tabela */}
+  <table className="table table-bordered table-hover text-center align-middle">
+    <thead className="table-dark">
+      <tr>
+        <th>Nome</th>
+        <th>Autor</th>
+        <th>ISBN</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {book.map((livro) => (
+        <tr key={livro.id}>
+          <td>{livro.name}</td>
+          <td>{livro.author}</td>
+          <td>{livro.isbn}</td>
+
+          <td className="d-flex justify-content-center gap-2">
+            <Link to={`/update/book/${livro.id}`} className="btn btn-warning btn-sm">
+              Editar
+            </Link>
+
+            <button
+              onClick={() => deleteBook(livro.id)}
+              className="btn btn-danger btn-sm"
+            >
+              Excluir
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
    );
 }
 

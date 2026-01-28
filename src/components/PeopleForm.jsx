@@ -81,79 +81,97 @@ function PeopleForm(){
     }
 
     return (
-        <div style={{ maxWidth: '500px', margin: '0 auto', padding: "20px" }}>
-            <h2>{id ? "Editar Pessoa" : "Novo Cadastro"}</h2>
-            <form onSubmit={handleSubmit}>
-                
-                {/* Campo Nome */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Nome:</label><br/>
-                    <input 
-                        type="text" 
-                        name="name" 
-                        value={people.name} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+        <div className="container mt-5">
+  <div className="card shadow-sm mx-auto" style={{ maxWidth: "500px" }}>
+    <div className="card-body">
 
-                {/* Campo Email */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Email:</label><br/>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        value={people.email} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+      <h4 className="card-title mb-4 text-center">
+        {id ? "Editar Pessoa" : "Novo Cadastro"}
+      </h4>
 
-                {/* Campo CPF */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>CPF:</label><br/>
-                    <input 
-                        type="text" 
-                        name="cpf" 
-                        value={people.cpf} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+      <form onSubmit={handleSubmit}>
 
-                {/* Campo Telefone */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Telefone:</label><br/>
-                    <input 
-                        type="text" 
-                        name="phone" 
-                        value={people.phone} 
-                        onChange={handleChange} 
-                    />
-                </div>
-
-                {/* Campo Data de Nascimento */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Data de Nascimento:</label><br/>
-                    <input 
-                        type="date" 
-                        name="birthdate" 
-                        value={people.birthdate} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
-
-                <div style={{ marginTop: '20px' }}>
-                    {/* Botão Cancelar: Volta para a Home */}
-                    <button type="button" onClick={() => navigate('/read/people')} style={{ marginRight: '10px' }}>
-                        Cancelar
-                    </button>
-                    <button type="submit">{id ? "Salvar alterações" : "Cadastrar"}</button>
-                </div>
-
-            </form>
+        <div className="mb-3">
+          <label className="form-label">Nome</label>
+          <input
+            type="text"
+            name="name"
+            value={people.name}
+            onChange={handleChange}
+            required
+            className="form-control"
+            placeholder="Digite o nome"
+          />
         </div>
+
+        <div className="mb-3">
+          <label className="form-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={people.email}
+            onChange={handleChange}
+            required
+            className="form-control"
+            placeholder="Digite o email"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">CPF</label>
+          <input
+            type="text"
+            name="cpf"
+            value={people.cpf}
+            onChange={handleChange}
+            required
+            className="form-control"
+            placeholder="Digite o CPF"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Telefone</label>
+          <input
+            type="text"
+            name="phone"
+            value={people.phone}
+            onChange={handleChange}
+            className="form-control"
+            placeholder="Digite o telefone"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Data de Nascimento</label>
+          <input
+            type="date"
+            name="birthdate"
+            value={people.birthdate}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        <div className="d-flex justify-content-between mt-4">
+          <button
+            type="button"
+            onClick={() => navigate('/read/people')}
+            className="btn btn-outline-secondary"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" className="btn btn-primary">
+            {id ? "Salvar alterações" : "Cadastrar"}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
     )
 }
 

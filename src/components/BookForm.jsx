@@ -80,69 +80,86 @@ function BookForm(){
     }
 
     return (
-        <div style={{ maxWidth: '500px', margin: '0 auto', padding: "20px" }}>
-            <h2>{id ? "Editar Livro" : "Novo Livro"}</h2>
-            <form onSubmit={handleSubmit}>
-                
-                {/* Campo Nome */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Nome:</label><br/>
-                    <input 
-                        type="text" 
-                        name="name" 
-                        value={book.name} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+        <div className="container mt-5">
+  <div className="card shadow-sm mx-auto" style={{ maxWidth: "500px" }}>
+    <div className="card-body">
 
-                {/* Campo Email */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Autor:</label><br/>
-                    <input 
-                        type="text" 
-                        name="author" 
-                        value={book.author} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+      <h4 className="card-title mb-4 text-center">
+        {id ? "Editar Livro" : "Novo Livro"}
+      </h4>
 
-                {/* Campo CPF */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>ISBN:</label><br/>
-                    <input 
-                        type="text" 
-                        name="isbn" 
-                        value={book.isbn} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
+      <form onSubmit={handleSubmit}>
 
-
-                {/* Campo Data de Nascimento */}
-                <div style={{ marginBottom: '10px' }}>
-                    <label>Data de lançamento:</label><br/>
-                    <input 
-                        type="date" 
-                        name="launchDate" 
-                        value={book.launchDate} 
-                        onChange={handleChange} 
-                        required 
-                    />
-                </div>
-
-                <div style={{ marginTop: '20px' }}>
-                    {/* Botão Cancelar: Volta para a Home */}
-                    <button type="button" onClick={() => navigate('/read/book')} style={{ marginRight: '10px' }}>
-                        Cancelar
-                    </button>
-                    <button type="submit">{id ? "Salvar alterações" : "Cadastrar"}</button>
-                </div>
-
-            </form>
+        <div className="mb-3">
+          <label className="form-label">Nome</label>
+          <input
+            type="text"
+            name="name"
+            value={book.name}
+            onChange={handleChange}
+            required
+            className="form-control"
+            placeholder="Digite o nome do livro"
+          />
         </div>
+
+        <div className="mb-3">
+          <label className="form-label">Autor</label>
+          <input
+            type="text"
+            name="author"
+            value={book.author}
+            onChange={handleChange}
+            required
+            className="form-control"
+            placeholder="Digite o autor"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">ISBN</label>
+          <input
+            type="text"
+            name="isbn"
+            value={book.isbn}
+            onChange={handleChange}
+            required
+            className="form-control"
+            placeholder="Digite o ISBN"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Data de lançamento</label>
+          <input
+            type="date"
+            name="launchDate"
+            value={book.launchDate}
+            onChange={handleChange}
+            required
+            className="form-control"
+          />
+        </div>
+
+        <div className="d-flex justify-content-between mt-4">
+          <button
+            type="button"
+            onClick={() => navigate('/read/book')}
+            className="btn btn-outline-secondary"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" className="btn btn-primary">
+            {id ? "Salvar alterações" : "Cadastrar"}
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
     )
 }
 
